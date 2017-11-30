@@ -11,3 +11,4 @@ Thumbs.db
 # vagrant files #
 ######################
 .vagrant/
+.vault-vagrant/

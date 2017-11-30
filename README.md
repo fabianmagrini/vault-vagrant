@@ -10,13 +10,14 @@ cd vault-vagrant
 vagrant up
 ```
 
-## Initializing Vault
+## Vault Cheatsheet
 from vault server
 
 ```
 vagrant ssh vault
 ```
 
+### Start
 
 ```
 nohup vault server -config=/vagrant/vault/vault.hcl &
@@ -50,23 +51,23 @@ vault audit-enable file path=./vault_audit.log
 vault mounts
 ```
 
-## Add Policies
+### Add Policies
 ```
 vault policy-write test /vagrant/vault/policies/test.hcl
 ```
 
-## Writing Secrets
+### Writing Secrets
 ```
 vault write secret/test/username value=testusername
 ```
 
-## Create token with policy
+### Create token with policy
 ```
 vault token-create -policy=test -wrap-ttl=20m
 ```
 
 
-## Unwrap token
+### Unwrap token
 from host
 
 ```
@@ -76,7 +77,7 @@ ACCESS_TOKEN=$(echo $RESPONSE | jq -r '.data.response | fromjson.auth.client_tok
 curl -H "X-Vault-Token: $ACCESS_TOKEN" -X GET http://192.168.0.50:8200/v1/secret/test/username
 ```
 
-## Renew token
+### Renew token
 from host
 
 ```
