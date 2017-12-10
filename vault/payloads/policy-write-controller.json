@@ -1,6 +1,5 @@
 {
     "policies": [
       "controller"
-    ],
-    "wrap-ttl": "20m"
+    ]
 }

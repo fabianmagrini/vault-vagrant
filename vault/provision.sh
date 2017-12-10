@@ -59,8 +59,16 @@ echo Adding the policies for the Controller...
 AUTH_TOKEN=$(cat .vault-token)
 vault auth $AUTH_TOKEN
 vault audit-enable file path=./vault_audit.log
+# enable the AppRole backend
+vault auth-enable approle
 # add the policies for the Controller
 vault policy-write controller /vagrant/vault/policies/controller.hcl
 vault write secret/controller/username value=controller
-# create token for controller
-curl --header "X-Vault-Token: $AUTH_TOKEN" --request POST --data @/vagrant/vault/policies/payload-controller.json $VAULT_ADDR/v1/auth/token/create -o /synced/controller-token.txt
+
+# create a token role for controller that generates a 6 hour periodic token:
+vault write auth/token/roles/controller allowed_policies=controller period=6h
+
+echo Create wrapped token for Controller...
+vault token-create -format=json -role=controller -wrap-ttl=60m > /synced/controller-token.txt
+cat /synced/controller-token.txt | jq -r .wrap_info.token
+

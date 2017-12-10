@@ -1,7 +1,8 @@
 Vagrant.configure("2") do |config|
   [
-    ["vault", "192.168.0.50", "vault/provision.sh"],
-    ["controller", "192.168.0.51", "controller/provision.sh"]
+    ["vault", "192.168.0.50", "vault/provision.sh"]
+    #,
+    #["controller", "192.168.0.51", "controller/provision.sh"]
   ].each do |name, ip, script|
     config.vm.define name do |server|
       server.vm.box = "ubuntu/xenial64"
